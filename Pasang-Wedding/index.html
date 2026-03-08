@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photo Gallery - 2026-03-08-5</title>
+    <title>Photo Gallery - 2026-03-08-7</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -208,14 +208,133 @@
             height: 20px;
             cursor: pointer;
         }
+        
+        /* 🎬 Splash Screen */
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #000;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+        
+        .splash-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .splash-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-size: cover;
+            background-position: center;
+            filter: blur(20px) brightness(0.4);
+            z-index: 1;
+        }
+        
+        .splash-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 40px;
+        }
+        
+        .splash-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+        }
+        
+        .splash-subtitle {
+            font-size: 1.2rem;
+            color: #ccc;
+            margin-bottom: 40px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+        }
+        
+        .splash-play-btn {
+            background: linear-gradient(135deg, #8b5cf6, #ec4899);
+            border: none;
+            color: #fff;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            font-size: 3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+        }
+        
+        .splash-play-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 15px 60px rgba(139, 92, 246, 0.7);
+        }
+        
+        .splash-play-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .splash-info {
+            margin-top: 30px;
+            font-size: 0.9rem;
+            color: #888;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+        }
+        
+        @media (max-width: 768px) {
+            .splash-title {
+                font-size: 1.8rem;
+            }
+            
+            .splash-subtitle {
+                font-size: 1rem;
+            }
+            
+            .splash-play-btn {
+                width: 100px;
+                height: 100px;
+                font-size: 2.5rem;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="slideshow" id="slideshow" onmousemove="showControlsTemporarily()" onclick="showControlsTemporarily()">
+    <!-- 🎬 Splash Screen -->
+    <div class="splash-screen" id="splashScreen">
+        <div class="splash-background" style="background-image: url('images/0000.jpg');"></div>
+        <div class="splash-content">
+            <div class="splash-title">Photo Gallery - 2026-03-08-7</div>
+            <div class="splash-subtitle">1160 photos • Background music</div>
+            <button class="splash-play-btn" onclick="startSlideshow()" title="Start Slideshow">
+                ▶️
+            </button>
+            <div class="splash-info">
+                Tap to start the slideshow with music
+            </div>
+        </div>
+    </div>
+    
+    <div class="slideshow" id="slideshow" onmousemove="showControlsTemporarily()" onclick="showControlsTemporarily()" style="display: none;">
         <div class="slideshow-header">
             <div class="slideshow-title">
                 <span>🎬</span>
-                <span>Photo Gallery - 2026-03-08-5</span>
+                <span>Photo Gallery - 2026-03-08-7</span>
                 <span style="color: #888; font-size: 0.9rem; margin-left: 10px;" id="counter">
                     1 / 1160
                 </span>
@@ -280,7 +399,7 @@
     
 
         <audio id="bgMusic" loop>
-            <source src="c:/music/track4.mp3" type="audio/mpeg">
+            <source src="music/track01.mp3" type="audio/mpeg">
         </audio>
     
     <script>
@@ -11892,7 +12011,7 @@
         let isFullscreen = false;
         let hideControlsTimeout = null;
         let slideInterval = null;
-        let slideDuration = 3000;
+        let slideDuration = 5000;
         
         const slideshow = document.getElementById('slideshow');
         const slideshowMain = document.querySelector('.slideshow-main');
@@ -11960,13 +12079,13 @@
             playBtn.textContent = isPlaying ? '⏸️ Pause' : '▶️ Play';
             
             if (isPlaying) {
-                startSlideshow();
+                startAutoplay();
             } else {
                 stopSlideshow();
             }
         }
         
-        function startSlideshow() {
+        function startAutoplay() {
             stopSlideshow();
             slideInterval = setInterval(() => {
                 nextSlide();
@@ -12003,7 +12122,7 @@
                 updateDisplay();
                 // Restart slideshow if playing
                 if (isPlaying) {
-                    startSlideshow();
+                    startAutoplay();
                 }
             }
         }
@@ -12094,24 +12213,39 @@
             showControlsTemporarily();
         });
         
-        // Auto-start
-        if (isPlaying) {
-            startSlideshow();
-        }
-        
-        // Auto-play music (if enabled)
-        if (bgMusic && true) {
-            bgMusic.play().catch(e => console.log('Music autoplay blocked:', e));
-        }
-        
-        // Start hiding controls after initial delay
-        setTimeout(() => {
-            if (isPlaying) {
-                slideshow.classList.add('hide-controls');
+        // 🎬 Splash Screen: Start slideshow on button click
+        function startSlideshowFromSplash() {
+            // Hide splash screen
+            const splashScreen = document.getElementById('splashScreen');
+            splashScreen.classList.add('hidden');
+            
+            // Show slideshow
+            const slideshow = document.getElementById('slideshow');
+            slideshow.style.display = 'flex';
+            
+            // Start playing
+            isPlaying = true;
+            playBtn.textContent = '⏸️ Pause';
+            startAutoplay();
+            
+            // Start music (if available)
+            if (bgMusic) {
+                bgMusic.play().catch(e => console.log('Music playback blocked:', e));
             }
-        }, 3000);
+            
+            // Hide controls after 3 seconds
+            setTimeout(() => {
+                slideshow.classList.add('hide-controls');
+            }, 3000);
+        }
         
-        // Generated: 2026-03-08 02:07
+        // Make startSlideshow globally accessible for splash button
+        window.startSlideshow = startSlideshowFromSplash;
+        
+        // Initialize display
+        updateDisplay();
+        
+        // Generated: 2026-03-08 02:56
     </script>
 </body>
 </html>
