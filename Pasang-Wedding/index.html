@@ -209,7 +209,7 @@
             cursor: pointer;
         }
         
-        /* 🎬 Splash Screen */
+        /* 🎬 Splash Screen - 2/3 Photo + 1/3 UI Layout */
         .splash-screen {
             position: fixed;
             top: 0;
@@ -220,8 +220,6 @@
             z-index: 9999;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
             opacity: 1;
             transition: opacity 0.5s ease;
         }
@@ -232,69 +230,70 @@
         }
         
         .splash-background {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            position: relative;
+            flex: 2;  /* 2/3 of screen height */
             background-size: cover;
             background-position: center;
-            filter: blur(20px) brightness(0.4);
-            z-index: 1;
+            filter: brightness(0.7);
+            overflow: hidden;
+        }
+        
+        .splash-background img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
         
         .splash-content {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            padding: 40px;
+            flex: 1;  /* 1/3 of screen height */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.95) 100%);
+            gap: 30px;
         }
         
         .splash-title {
             font-size: 2.5rem;
             font-weight: bold;
-            margin-bottom: 20px;
+            text-align: center;
             text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+            line-height: 1.2;
         }
         
         .splash-subtitle {
-            font-size: 1.2rem;
+            font-size: 1.4rem;
             color: #ccc;
-            margin-bottom: 40px;
+            text-align: center;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+            margin-top: -15px;
         }
         
         .splash-play-btn {
             background: linear-gradient(135deg, #8b5cf6, #ec4899);
             border: none;
             color: #fff;
-            width: 120px;
-            height: 120px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
-            font-size: 3rem;
+            font-size: 4rem;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.5);
+            box-shadow: 0 15px 50px rgba(139, 92, 246, 0.6);
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto;
         }
         
         .splash-play-btn:hover {
             transform: scale(1.1);
-            box-shadow: 0 15px 60px rgba(139, 92, 246, 0.7);
+            box-shadow: 0 20px 70px rgba(139, 92, 246, 0.8);
         }
         
         .splash-play-btn:active {
             transform: scale(0.95);
-        }
-        
-        .splash-info {
-            margin-top: 30px;
-            font-size: 0.9rem;
-            color: #888;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
         }
         
         @media (max-width: 768px) {
@@ -303,34 +302,40 @@
             }
             
             .splash-subtitle {
-                font-size: 1rem;
+                font-size: 1.1rem;
             }
             
             .splash-play-btn {
-                width: 100px;
-                height: 100px;
-                font-size: 2.5rem;
+                width: 120px;
+                height: 120px;
+                font-size: 3.5rem;
+            }
+            
+            .splash-content {
+                padding: 30px 20px;
+                gap: 25px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- 🎬 Splash Screen -->
+    <!-- 🎬 Splash Screen with Custom Photo -->
     <div class="splash-screen" id="splashScreen">
-        <div class="splash-background" style="background-image: url('images/0000.jpg');"></div>
+        <div class="splash-background">
+            <img src="splash.jpg" 
+                 onerror="this.src='images/0000.jpg'" 
+                 alt="Welcome">
+        </div>
         <div class="splash-content">
-            <div class="splash-title">Photo Gallery - 2026-03-08-7</div>
-            <div class="splash-subtitle">1160 photos • Background music</div>
+            <div class="splash-title">Pasang weds Lhamu</div>
             <button class="splash-play-btn" onclick="startSlideshow()" title="Start Slideshow">
                 ▶️
             </button>
-            <div class="splash-info">
-                Tap to start the slideshow with music
-            </div>
+            <div class="splash-subtitle">December 2025</div>
         </div>
     </div>
     
-    <div class="slideshow" id="slideshow" onmousemove="showControlsTemporarily()" onclick="showControlsTemporarily()" style="display: none;">
+    <div class="slideshow" id="slideshow" onmousemove="showControlsTemporarily()" style="display: none;">
         <div class="slideshow-header">
             <div class="slideshow-title">
                 <span>🎬</span>
@@ -340,13 +345,13 @@
                 </span>
             </div>
             <div style="display: flex; gap: 10px;">
-                <button class="slideshow-btn" onclick="toggleFullscreen()" id="fullscreenBtn">
+                <button class="slideshow-btn" onclick="event.stopPropagation(); toggleFullscreen();" id="fullscreenBtn">
                     ⛶ Fullscreen
                 </button>
             </div>
         </div>
         
-        <div class="slideshow-main" onclick="togglePlay()">
+        <div class="slideshow-main">
             <!-- Images will be added by JavaScript -->
         </div>
         
@@ -359,22 +364,22 @@
             </div>
             
             <div class="slideshow-controls">
-                <button class="slideshow-btn" onclick="prevSlide()" id="prevBtn">
+                <button class="slideshow-btn" onclick="event.stopPropagation(); prevSlide();" id="prevBtn">
                     ⏮️ Prev
                 </button>
                 
-                <button class="slideshow-btn primary" onclick="togglePlay()" id="playBtn">
+                <button class="slideshow-btn primary" onclick="event.stopPropagation(); togglePlay();" id="playBtn">
                     ⏸️ Pause
                 </button>
                 
-                <button class="slideshow-btn" onclick="nextSlide()" id="nextBtn">
+                <button class="slideshow-btn" onclick="event.stopPropagation(); nextSlide();" id="nextBtn">
                     Next ⏭️
                 </button>
                 
                 <div class="slideshow-settings">
                     <div class="slideshow-setting">
                         <span>Speed:</span>
-                        <select id="speedSelect" onchange="changeSpeed()">
+                        <select id="speedSelect" onchange="event.stopPropagation(); changeSpeed();">
                             <option value="2">2s</option>
                             <option value="3">3s</option>
                             <option value="5" selected>5s</option>
@@ -384,13 +389,13 @@
                     </div>
                     
                     <div class="slideshow-setting">
-                        <input type="checkbox" id="loopCheck" onchange="toggleLoop()" checked>
+                        <input type="checkbox" id="loopCheck" onchange="event.stopPropagation(); toggleLoop();" checked>
                         <label for="loopCheck">Loop</label>
                     </div>
                 </div>
                 
 
-                    <button class="slideshow-btn" onclick="toggleMusic()" title="Music (M)">
+                    <button class="slideshow-btn" onclick="event.stopPropagation(); toggleMusic();" title="Music (M)">
                         <span id="musicIcon">🎵</span> Music
                     </button>
             </div>
@@ -12011,7 +12016,7 @@
         let isFullscreen = false;
         let hideControlsTimeout = null;
         let slideInterval = null;
-        let slideDuration = 5000;
+        let slideDuration = 3000;
         
         const slideshow = document.getElementById('slideshow');
         const slideshowMain = document.querySelector('.slideshow-main');
@@ -12147,11 +12152,28 @@
             slideshow.classList.remove('hide-controls');
             
             clearTimeout(hideControlsTimeout);
-            hideControlsTimeout = setTimeout(() => {
+            // Only auto-hide if slideshow is playing
+            if (isPlaying) {
+                hideControlsTimeout = setTimeout(() => {
+                    slideshow.classList.add('hide-controls');
+                }, 3000);
+            }
+        }
+        
+        // 📱 Mobile-friendly: Toggle controls visibility on tap (without affecting playback)
+        function toggleControlsVisibility() {
+            const isHidden = slideshow.classList.contains('hide-controls');
+            
+            if (isHidden) {
+                // Show controls
+                showControlsTemporarily();
+            } else {
+                // Hide controls immediately if playing, keep visible if paused
                 if (isPlaying) {
                     slideshow.classList.add('hide-controls');
+                    clearTimeout(hideControlsTimeout);
                 }
-            }, 3000);
+            }
         }
         
         function toggleMusic() {
@@ -12203,8 +12225,19 @@
             fullscreenBtn.textContent = isFullscreen ? '⛶ Exit Fullscreen' : '⛶ Fullscreen';
         });
         
+        // 📱 Touch event handling for mobile devices
+        slideshowMain.addEventListener('click', (e) => {
+            toggleControlsVisibility();
+        });
+        
+        slideshowMain.addEventListener('touchend', (e) => {
+            e.preventDefault();  // Prevent double-firing with click
+            toggleControlsVisibility();
+        });
+        
         // Make progress bar clickable (jump to slide)
         progressBarContainer.addEventListener('click', (e) => {
+            e.stopPropagation();  // Prevent triggering toggleControlsVisibility
             const rect = progressBarContainer.getBoundingClientRect();
             const clickX = e.clientX - rect.left;
             const percent = clickX / rect.width;
@@ -12245,7 +12278,7 @@
         // Initialize display
         updateDisplay();
         
-        // Generated: 2026-03-08 02:56
+        // Generated: 2026-03-08 14:21
     </script>
 </body>
 </html>
