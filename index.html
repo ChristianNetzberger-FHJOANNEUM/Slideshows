@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Slideshows - Gallery Hub</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            color: #fff;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            animation: fadeInDown 0.8s ease;
+        }
+        
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            width: 100%;
+            animation: fadeInUp 1s ease;
+        }
+        
+        .slideshow-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .slideshow-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 48px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .card-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .card-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+        
+        .card-description {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+        
+        .card-meta {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .card-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .footer {
+            margin-top: 60px;
+            text-align: center;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .header p {
+                font-size: 1rem;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            
+            .card-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🎬 My Slideshows</h1>
+        <p>Select a gallery to view</p>
+    </div>
+    
+    <div class="gallery-grid">
+        <!-- Slideshow Card 1 -->
+        <a href="https://pasang-wedding.vercel.app" class="slideshow-card" target="_blank">
+            <span class="card-icon">💑</span>
+            <div class="card-title">Pasang weds Lhamu</div>
+            <div class="card-description">
+                Wedding celebration in the Himalayas, December 2025
+            </div>
+            <div class="card-meta">
+                <span>📸 1,190 photos</span>
+                <span>🎵 Background music</span>
+                <span>⏱️ ~2 hours</span>
+            </div>
+        </a>
+        
+        <!-- Slideshow Card 2 -->
+        <a href="https://nepal-trip-2025.vercel.app" class="slideshow-card" target="_blank">
+            <span class="card-icon">🏔️</span>
+            <div class="card-title">Nepal Adventure 2025</div>
+            <div class="card-description">
+                Trekking through the Annapurna Circuit
+            </div>
+            <div class="card-meta">
+                <span>📸 450 photos</span>
+                <span>⏱️ ~45 minutes</span>
+            </div>
+        </a>
+        
+        <!-- Slideshow Card 3 -->
+        <a href="https://family-reunion.vercel.app" class="slideshow-card" target="_blank">
+            <span class="card-icon">👨‍👩‍👧‍👦</span>
+            <div class="card-title">Family Reunion 2024</div>
+            <div class="card-description">
+                Summer gathering at the lake house
+            </div>
+            <div class="card-meta">
+                <span>📸 320 photos</span>
+                <span>🎵 Background music</span>
+                <span>⏱️ ~35 minutes</span>
+            </div>
+        </a>
+        
+        <!-- Add more slideshows as needed -->
+    </div>
+    
+    <div class="footer">
+        <p>Created with Photo Tool 📸</p>
+    </div>
+</body>
+</html>
