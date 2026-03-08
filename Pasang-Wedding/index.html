@@ -12018,6 +12018,10 @@
         let slideInterval = null;
         let slideDuration = 3000;
         
+        // 🎚️ Music ducking configuration
+        const MUSIC_DUCKING_VOLUME = 0.0;  // Convert 0-100% to 0.0-1.0
+        const MUSIC_FULL_VOLUME = 1.0;
+        
         const slideshow = document.getElementById('slideshow');
         const slideshowMain = document.querySelector('.slideshow-main');
         const playBtn = document.getElementById('playBtn');
@@ -12082,11 +12086,21 @@
         function togglePlay() {
             isPlaying = !isPlaying;
             playBtn.textContent = isPlaying ? '⏸️ Pause' : '▶️ Play';
-            
+
             if (isPlaying) {
                 startAutoplay();
+                // 🎚️ Restore full music volume when playing
+                const bgMusic = document.getElementById('bgMusic');
+                if (bgMusic) {
+                    bgMusic.volume = MUSIC_FULL_VOLUME;
+                }
             } else {
                 stopSlideshow();
+                // 🎚️ Duck music volume when paused
+                const bgMusic = document.getElementById('bgMusic');
+                if (bgMusic) {
+                    bgMusic.volume = MUSIC_DUCKING_VOLUME;
+                }
             }
         }
         
@@ -12278,7 +12292,7 @@
         // Initialize display
         updateDisplay();
         
-        // Generated: 2026-03-08 14:21
+        // Generated: 2026-03-08 14:47
     </script>
 </body>
 </html>
